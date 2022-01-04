@@ -12,15 +12,15 @@ public class Main
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in)); 
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));   
         StringTokenizer st;
-        st = new StringTokenizer(br.readLine());
-        int A = Integer.parseInt(st.nextToken());
-        int B = Integer.parseInt(st.nextToken());
-        while ((A != 0) & (B != 0)) {
+        while (true) {
+            st = new StringTokenizer(br.readLine());
+            int A = Integer.parseInt(st.nextToken());
+            int B = Integer.parseInt(st.nextToken());
+            if (A==0 && B ==0) {
+                break;
+            }
             bw.write((A+B)+"\n");
             bw.flush();
-            st = new StringTokenizer(br.readLine(), " ");
-            A = Integer.parseInt(st.nextToken());
-            B = Integer.parseInt(st.nextToken());
         }
     }
 }
