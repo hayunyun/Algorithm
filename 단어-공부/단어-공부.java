@@ -13,17 +13,15 @@ public class Main
         for (int i=0; i<S.length(); i++) {
             apb[S.charAt(i) - 65] += 1;
         }
-        int cnt = 0;
         int max = -1;
         char ans = ' ';
         for (int j=0; j<apb.length; j++) {
             if (max == apb[j]) {
                 ans = '?';
             }
-            if (max < apb[j]) {
+            else if (max < apb[j]) {
                 max = apb[j];
-                cnt = j;
-                ans = (char)(cnt+65);
+                ans = (char)(j+65);
             }
         }
         bw.write(ans + "\n");
