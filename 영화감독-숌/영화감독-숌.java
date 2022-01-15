@@ -9,15 +9,14 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in)); 
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));  
         int N = Integer.parseInt(br.readLine());
-        int cnt = 0;
+        int cnt = 1;
         int n = 666;
         while (N!=cnt) {
-            String num = String.valueOf(n);
-            if (num.contains("666")) 
+            n++;
+            if (String.valueOf(n).contains("666")) 
                 cnt++;
-            n = Integer.parseInt(num) + 1;
         }
-        bw.write((n-1) + "\n");
+        bw.write((n) + "\n");
         bw.flush();
     }
 }
