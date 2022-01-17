@@ -19,6 +19,8 @@ class Point {
         this.x = x;
         this.type = type;
     }
+    @Override
+    public String toString(){ return "y=" + y + "x=" + x + "type=" + type; }
 }
 
 public class Main {
@@ -32,6 +34,8 @@ public class Main {
     static final int[] MY = {0, 0, -1, 1}; // 위, 아래
     
     public static void main(String[] args) throws IOException {
+//         System.setIn(new FileInputStream("src/input.txt"));
+
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in)); 
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));  
         StringTokenizer st = new StringTokenizer(br.readLine());
@@ -71,7 +75,7 @@ public class Main {
             for (int i = 0; i < 4; i++) {
                 int ty = p.y + MY[i];
                 int tx = p.x + MX[i];
-                if (0 <= ty && ty < R && 0 <= tx && tx < C) {
+                if (0 <= ty && ty < R && 0 <= tx && tx < C) { // 맵을 벗어나지 않는 구역이라면
                     // 4. 갈 수 있는가? -> 고슴도치 (맵을 벗어나지 않고, '.' 또는 D 구역, 방문하지 않은 곳)
                     if (p.type == '.' || p.type == 'S') { // 고슴도치
                         if ((map[ty][tx] == '.' || map[ty][tx] == 'D') && dp[ty][tx] == 0) { // 빈곳이거나 목적지 && 아직 방문하지 않은 곳
