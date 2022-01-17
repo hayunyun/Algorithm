@@ -49,14 +49,14 @@ public class Main {
                 //   4. 갈 수 있는가? - 생략 가능 (오름차순 정렬했기 때문)
                 char nextData = data[nextIndex];
                 if (nextData=='a' || nextData=='e' || nextData=='i' || nextData=='o'|| nextData=='u') { // 모음
-                    //      5. 간다 - dfs(next) -> 자음
+                    //      5. 간다 - dfs(next) -> 모음
                     dfs(length+1, ja, mo+1, nextIndex, pwd+nextData);
                 } else { // 자음
-                    //      5. 간다 - dfs(next) -> 모음
+                    //      5. 간다 - dfs(next) -> 자음
                     dfs(length+1, ja+1, mo, nextIndex, pwd+nextData);
                 }
             }
         }
-        // 6. 체크아웃 - 생갹 가능
+        // 6. 체크아웃 - 생략 가능
     }
 }
