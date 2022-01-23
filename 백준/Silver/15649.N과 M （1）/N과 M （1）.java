@@ -9,11 +9,13 @@ public class Main {
     static boolean[] check;
     static int[] arr;
     static int N, M;
-    static BufferedWriter bw;
+    static StringBuilder sb;
     public static void main(String[] args) throws IOException {
+        // System.setIn(new FileInputStream("src/input.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in)); 
-        bw = new BufferedWriter(new OutputStreamWriter(System.out));  
+        // bw = new BufferedWriter(new OutputStreamWriter(System.out));  
         StringTokenizer st = new StringTokenizer(br.readLine());
+        sb = new StringBuilder();
         
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
@@ -22,7 +24,7 @@ public class Main {
         arr = new int[M];
         
         dfs(0);
-        bw.flush();
+        System.out.print(sb);
     }
     
     static void dfs(int depth) throws IOException {
@@ -30,9 +32,9 @@ public class Main {
         if (depth == M) {
             // arr 배열 출력 후 return
             for (int val : arr) {
-                bw.write(val + " ");
+                sb.append(val).append(" ");
             }
-            bw.write("\n");
+            sb.append("\n");
             return;
         }
         // 3. 연결된 곳을 순회
