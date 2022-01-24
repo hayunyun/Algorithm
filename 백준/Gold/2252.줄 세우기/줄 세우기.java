@@ -39,8 +39,8 @@ public class Main {
             st = new StringTokenizer(br.readLine());
             from = Integer.parseInt(st.nextToken());
             to = Integer.parseInt(st.nextToken()); 
-            map[from].add(to);
-            indegree[to] += 1; // 해당 노드에 진입차수+1
+            map[from].add(to); // 인접 정점들 넣기
+            indegree[to] += 1; // 인접 정점에 진입차수+1
         }
 
         // 위상정렬
