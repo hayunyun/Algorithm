@@ -28,9 +28,7 @@ public class Main {
             int b = Integer.parseInt(st.nextToken());
             
             if (x==1) { // find
-                int aRoot = find(a);
-                int bRoot = find(b);
-                if (aRoot == bRoot)
+                if (find(a) == find(b))
                     bw.write("YES\n");
                 else bw.write("NO\n");
             }
@@ -39,6 +37,7 @@ public class Main {
             }
         }
         bw.flush();
+        bw.close();
     }
 
     static void union(int a, int b) {
