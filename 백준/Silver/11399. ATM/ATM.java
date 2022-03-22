@@ -15,11 +15,11 @@ public class Main {
 
         Arrays.sort(people);
 
+        int prev = 0;
         int total = 0;
         for (int i = 0; i < n; i++) {
-            for (int j = 0; j <= i; j++) {
-                total += people[j];
-            }
+            total += prev + people[i];
+            prev += people[i];
         }
         System.out.println(total);
     }
