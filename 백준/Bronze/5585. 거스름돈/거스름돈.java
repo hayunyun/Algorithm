@@ -5,34 +5,16 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in)); 
         int change = 1000 - Integer.parseInt(br.readLine());
+        int[] coins = {500, 100, 50, 10, 5, 1};
         int total = 0;
 
-        while (change != 0) {
-            if (change >= 500) {
-                total += change / 500;
-                change %= 500;
-            }
-            else if (change >= 100) {
-                total += change / 100;
-                change %= 100;
-            }
-            else if (change >= 50) {
-                total += change / 50;
-                change %= 50;
-            }
-            else if (change >= 10) {
-                total += change / 10;
-                change %= 10;
-            }
-            else if (change >= 5) {
-                total += change / 5;
-                change %= 5;
-            }
-            else if (change >= 1) {
-                total += change / 1;
-                change %= 1;
+        for (int i = 0; i < coins.length; i++) {
+            if (change / coins[i] > 0) {
+                total += change / coins[i];
+                change %= coins[i];
             }
         }
+        
         System.out.println(total); 
     }
 }
