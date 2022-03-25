@@ -33,7 +33,7 @@ public class Main {
                 lo = mid + 1;
             }
         }
-        System.out.println(lo - 1);
+        System.out.println(hi - 1);
     }
 
 }
