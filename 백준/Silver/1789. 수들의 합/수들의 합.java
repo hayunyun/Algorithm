@@ -9,14 +9,11 @@ public class Main {
         long n = Long.parseLong(br.readLine());
 
         long sum = 0;
-        int add = 1;
-        int cnt = 0;
+        int add = 0;
         while(sum <= n) {
-            sum += add;
-            add++;
-            cnt++;
+            sum += ++add;
         }
 
-        System.out.println(sum > n ? cnt - 1 : cnt);
+        System.out.println(sum > n ? add - 1 : add);
     }
 }
