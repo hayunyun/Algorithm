@@ -43,7 +43,6 @@ public class Main {
     static void dfs(int[] start) {
         int x = start[0];
         int y = start[1];
-        if (check[x][y]) return;
         check[x][y] = true;
 
         for (int i = 0; i < 9; i++) {
