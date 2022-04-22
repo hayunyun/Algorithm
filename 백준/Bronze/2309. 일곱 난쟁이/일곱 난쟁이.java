@@ -16,22 +16,21 @@ public class Main {
         Arrays.sort(nums);
 
         StringBuilder sb = new StringBuilder();
+        int spyA = 0, spyB = 0;
         loop1:
-        for (int j = 0; j < 9; j++) {
-            total -= nums[j];
-            for (int i = 0; i < 9; i++) {
-                if (i == j) continue;
-                total -= nums[i];
-                if (total == 100) {
-                    for (int k = 0; k < 9; k++) {
-                        if (k ==j || k ==i) continue;
-                        sb.append(nums[k]).append("\n");
-                    }
+        for (int j = 0; j < 8; j++) {
+            for (int i = 1; i < 9; i++) {
+                if (total - nums[j] - nums[i] == 100) {
+                    spyA = i;
+                    spyB = j;
                     break loop1;
                 }
-                total += nums[i];
             }
-            total += nums[j];
+        }
+
+        for (int k = 0; k < 9; k++) {
+            if (k == spyA || k == spyB) continue;
+            sb.append(nums[k]).append("\n");
         }
         System.out.println(sb);
     }
