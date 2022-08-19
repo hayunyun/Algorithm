@@ -28,10 +28,8 @@ public class Main {
         while (!q.isEmpty()) {
             int now = q.poll();
             for (int i = 0; i < 3; i++) {
-                int next;
-                if (i == 0) next = now - 1;
-                else if (i == 1) next = now + 1;
-                else next = now * 2;
+                int next = now + way[i];
+                if (next == now) next *= 2;
                 
                 if (next == k) {
                     System.out.println(cnt[now]);
