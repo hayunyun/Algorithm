@@ -24,11 +24,6 @@ public class Main {
     }
 
     private static void solve(int cnt) {
-        if (cnt > 0) {
-            if (!garoSero(zeroPos.get(cnt - 1)[0], zeroPos.get(cnt - 1)[1])) return;
-            if (!nemo(zeroPos.get(cnt - 1)[0], zeroPos.get(cnt - 1)[1])) return;
-        }
-
         // 다 채우면 출력
         if (cnt == zeroPos.size()) {
             print();
@@ -39,7 +34,9 @@ public class Main {
         int[] now = zeroPos.get(cnt);
         for (int i = 1; i <= 9; i++) {
             map[now[0]][now[1]] = i;
-            solve(cnt + 1);
+            if (garoSero(now[0], now[1]) && nemo(now[0], now[1])) {
+                solve(cnt + 1);
+            }
             map[now[0]][now[1]] = 0;
         }
     }
