@@ -52,12 +52,10 @@ public class Main {
 
         // 섬 사이에 다리 다 놔보면서 최소거리 구하기
         minBridge = Integer.MAX_VALUE;
-        for (int island = 1; island <= islands; island++) {
-            for (int i = 0; i < n; i++) {
-                for (int j = 0; j < n; j++) {
-                    if (map[i][j] == island) {
-                        bridgeTest(i, j, island);
-                    }
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (map[i][j] > 0) {
+                    bridgeTest(i, j);
                 }
             }
         }
@@ -65,14 +63,8 @@ public class Main {
         System.out.println(minBridge);
     }
 
-    static void bridgeTest(int r, int c, int island) {
+    static void bridgeTest(int r, int c) {
         vis = new boolean[n][n];
-        int[][] newMap = new int[n][n];
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                newMap[i][j] = map[i][j];
-            }
-        }
 
         Queue<Bridge> q = new LinkedList<>();
         q.add(new Bridge(r, c, 0));
@@ -91,12 +83,12 @@ public class Main {
                 if (nr >= 0 && nr < n && nc >= 0 && nc < n) {
                     if (!vis[nr][nc]) {
                         if (map[nr][nc] == 0) {
-                            newMap[nr][nc] = dist + 1;
                             q.add(new Bridge(nr, nc, dist + 1));
                             vis[nr][nc] = true;
                         }
-                        else if (map[nr][nc] > island) {
+                        else if (map[nr][nc] > map[r][c]) {
                             minBridge = Math.min(minBridge, dist);
+                            return;
                         }
                     }
                 }
