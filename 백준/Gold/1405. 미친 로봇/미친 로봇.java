@@ -37,7 +37,7 @@ public class Main {
             int nr = r + dr[i];
             int nc = c + dc[i];
 
-            if (nr > 0 && nr < 30 && nc > 0 && nc < 30) {
+            if (nr >= 0 && nr < 30 && nc >= 0 && nc < 30) {
                 if (!vis[nr][nc]) {
                     vis[nr][nc] = true;
                     search(nr, nc, cnt + 1, total * dirs[i]);
