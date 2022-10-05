@@ -7,77 +7,79 @@ import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
-    static class Pos {
-        int x, y, wall;
+	static int n, m;
+	static int[] dr = {-1, 1, 0, 0};
+	static int[] dc = {0, 0, -1, 1};
+	static int[][] map;
+	static int[][][] vis;
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		n = Integer.parseInt(st.nextToken());
+		m = Integer.parseInt(st.nextToken());
+		map = new int[n][m];
+		
+		for (int i = 0; i < n; i++) {
+			String str = br.readLine();
+			for (int j = 0; j < m; j++) {
+				map[i][j] = str.charAt(j) - '0';
+			}
+		}
+		
+		vis = new int[n][m][2];
+		System.out.println(go());
+	}
+	
+	/*
+	 * 0. 방문하지 않았다면
+	 * 1. 벽이 아닐 경우
+	 * -> 그냥 지나간다 (+1)
+	 * 2. 벽일 경우
+	 * 2-1-1. 벽을 부수지 않은 경우 벽을 부순다
+	 * 2-1-2. 벽을 부수지 않았지만 벽을 부수지 않는다 -> 안 해도 될듯,,,? 어차피 사방탐색해서
+	 * 2-2. 벽을 부순 경우 더이상 벽을 부술 수 없다 (지나갈 수 없다) -> 코드구현 필요 x
+	 */
+	
+	static int go() {
+		Queue<int[]> q = new LinkedList<>();
+		q.add(new int[] {0, 0, 0});
+		vis[0][0][0] = 1;
+		
+		while (!q.isEmpty()) {
+			int[] now = q.poll();
+			int r = now[0];
+			int c = now[1];
+			int cnt = now[2];
+			
+			if (r == n-1 && c == m-1) return vis[r][c][cnt];
+			
+			for (int i = 0; i < 4; i++) {
+				int nr = r + dr[i];
+				int nc = c + dc[i];
+				
+				if (nr >= 0 && nr < n && nc >= 0 && nc < m) {
+					// 방문하지 않았다면
+					if (vis[nr][nc][cnt] == 0) {
+						// 벽이 아닐 경우 -> 그냥 지나간다
+						if (map[nr][nc] == 0) {
+							vis[nr][nc][cnt] = vis[r][c][cnt] + 1;
+							q.add(new int[] {nr, nc, cnt});
+						}
+						// 벽인 경우
+						else {
+							// 벽을 부수지 않은 경우 벽을 부순다
+							if (cnt == 0) {
+								// 벽을 부수지 않은 경우 벽을 부순다
+								vis[nr][nc][cnt + 1] = vis[r][c][cnt] + 1;
+								q.add(new int[] {nr, nc, cnt+1});
+							} 
+						}
+					}
+				}
+			}
+		}
+		
+		return -1;
+	}
 
-        public Pos(int x, int y, int wall) {
-            this.x = x;
-            this.y = y;
-            this.wall = wall;
-        }
-    }
-
-    static int n, m;
-    static int[][] map;
-    static int[][][] cnt; // 방문체크 && 거리 기록 %% 벽 부쉈는지
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        n = Integer.parseInt(st.nextToken());
-        m = Integer.parseInt(st.nextToken());
-
-        map = new int[n][m];
-        cnt = new int[n][m][2]; // cnt[][][0] -> 벽안부숨, cnt[][][1] -> 벽부숨
-        cnt[0][0][0] = 1; // 시작점부터 1 세기
-
-        // input
-        for (int i = 0; i < n; i++) {
-            String str = br.readLine();
-            for (int j = 0; j < m; j++) {
-                map[i][j] = str.charAt(j) - '0';
-            }
-        }
-        System.out.println(bfs(new Pos(0, 0, 0)));
-//        bfs(new Pos(0, 0, 0));
-//        System.out.println( == 0 ? -1 : cnt[n-1][m-1][1]);
-
-    }
-
-    static int bfs(Pos p) {
-        Queue<Pos> q = new LinkedList<>();
-        q.add(p);
-
-        int[] dx = {0, 0, -1, 1}; // 좌우
-        int[] dy = {-1, 1, 0, 0}; // 상하
-
-        while(!q.isEmpty()) {
-            Pos now = q.poll();
-            int x = now.x;
-            int y = now.y;
-            int wall = now.wall;
-
-            if (x == n - 1 && y == m - 1) return cnt[n-1][m-1][wall];
-
-            for (int i = 0; i < 4; i++) {
-                int nx = x + dx[i];
-                int ny = y + dy[i];
-
-                if (nx >= 0 && nx < n && ny >= 0 && ny < m) {
-                    // 1. 벽이 아닐 경우 && 방문하지 않았을 경우
-                    if (map[nx][ny] == 0 && cnt[nx][ny][wall] == 0) {
-                        cnt[nx][ny][wall] = cnt[x][y][wall] + 1;
-                        q.add(new Pos(nx, ny, wall));
-                    }
-                    // 2. 벽일 경우 && 아직 부수지 않은 경우 && 방문하지 않았을 경우
-                    else if (map[nx][ny] == 1 && wall == 0 && cnt[nx][ny][wall] == 0) {
-                        cnt[nx][ny][wall + 1] = cnt[x][y][wall] + 1;
-                        q.add(new Pos(nx, ny,  wall + 1));
-                    }
-                }
-            }
-        }
-
-        return -1;
-    }
 }
