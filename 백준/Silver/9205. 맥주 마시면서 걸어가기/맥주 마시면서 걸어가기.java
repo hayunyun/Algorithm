@@ -7,6 +7,11 @@ import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
+    /*
+    두 지점의 거리차가 1000 이하라면 이동
+    모든 가능한 인근 정점을 탐색하고,
+    도착지도 탐색했다면 happy 아니면 sad
+     */
     static int n;
     static int[][] map;
     static boolean[] vis;
@@ -38,7 +43,7 @@ public class Main {
             map[n + 1][1] = Integer.parseInt(st.nextToken());
 
             bfs();
-            if (vis[n+1]) sb.append("happy");
+            if (vis[n + 1]) sb.append("happy");
             else sb.append("sad");
 
             sb.append("\n");
