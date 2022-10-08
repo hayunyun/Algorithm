@@ -29,45 +29,39 @@ public class Main {
         }
 
         ans = Integer.MAX_VALUE;
-        find(1, 0);
-        System.out.println(ans == Integer.MAX_VALUE ? -1: ans);
+        for (int i = 0; i <= 3; i++) {
+        	if (find(1, 1, 0, i)) break;     	
+        }
+        
+        System.out.println(ans == Integer.MAX_VALUE ? -1 : ans);
     }
 
     // 가능한 부분에 다 놓아보며, 놓을 때마다 i==i인지 확인, 하나라도 아니면 return
-    static void find(int r, int cnt) {
-        if (cnt > 3) return;
-
+    static boolean find(int r,int c, int cnt, int total) {
         // i == i 인지 확인
-        if (game()) {
-            ans = Math.min(ans, cnt);
-            return;
+        if (cnt == total) {
+        	if (game()) {
+        		ans = cnt;
+        		return true;
+        	}        	
+        	return false;
         }
 
         for (int i = r; i <= h; i++) {
-            for (int j = 1; j < n; j++) {
+            for (int j = c; j < n; j++) {
                 // 사다리가 아니고, 좌우에도 사다리가 없다면
-                if (!ladder[i][j] && leftRight(i, j)) {
-                    ladder[i][j] = true; // 사다리 놓기
-                    find(i, cnt + 1);
-                    ladder[i][j] = false;
-                }
+                if (ladder[i][j]) continue;
+                if (ladder[i][j-1] || ladder[i][j+1]) continue;
+                
+                ladder[i][j] = true; // 사다리 놓기
+                if (find(i, j+2, cnt + 1, total)) return true;
+                ladder[i][j] = false;
             }
+            
+            c = 1;
         }
-
-    }
-
-    static int[] dc = {-1, 1};
-    static boolean leftRight(int r, int c) {
-        for (int i = 0; i < 2; i++) {
-            int nr = r;
-            int nc = c + dc[i];
-            if (nc >= 1 && nc < n) {
-                // 좌우에 사다리가 있다면 false
-                if (ladder[nr][nc]) return false;
-            }
-        }
-        // 없으면 true
-        return true;
+        
+        return false;
     }
 
     static boolean game() {
