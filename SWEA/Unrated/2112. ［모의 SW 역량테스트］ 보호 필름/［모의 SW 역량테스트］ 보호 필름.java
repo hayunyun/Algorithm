@@ -8,7 +8,6 @@ import java.util.StringTokenizer;
 public class Solution {
     static int d, w, k, ans;
     static int[][] map;
-    static boolean[] vis;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
@@ -29,7 +28,6 @@ public class Solution {
                 }
             }
 
-            vis = new boolean[d]; // 약물주입 체크
             ans = Integer.MAX_VALUE;
             medicine(0, 0);
             sb.append("#" + tc + " " + ans + "\n");
@@ -52,22 +50,18 @@ public class Solution {
 
         // 약물주입 -> 조합
         for (int i = idx; i < d; i++) {
-            if (!vis[i]) {
-                vis[i] = true;
-                int[] tmp = map[i].clone();
+            int[] tmp = map[i].clone();
 
-                // 0으로 싹 다 바꾸기
-                Arrays.fill(map[i], 0);
-                medicine(i + 1, cnt + 1);
+            // 0으로 싹 다 바꾸기
+            Arrays.fill(map[i], 0);
+            medicine(i + 1, cnt + 1);
 
-                // 1로 싹 다 바꾸기
-                Arrays.fill(map[i], 1);
-                medicine(i + 1, cnt + 1);
+            // 1로 싹 다 바꾸기
+            Arrays.fill(map[i], 1);
+            medicine(i + 1, cnt + 1);
 
-                // 복구
-                map[i] = tmp;
-                vis[i] = false;
-            }
+            // 복구
+            map[i] = tmp;
         }
     }
 
