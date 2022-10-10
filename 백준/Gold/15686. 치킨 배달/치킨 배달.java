@@ -6,54 +6,77 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 public class Main {
-	static int n , min = Integer.MAX_VALUE, sum = 0;
-	static ArrayList<int[]> house = new ArrayList<>();
-	static ArrayList<int[]> chick = new ArrayList<>();
-	public static void main(String[] args) throws IOException {
+    static int n, m, ans;
+    static int[][] map;
+    static Info [] sel;
+    static ArrayList<Info> chickens = new ArrayList<>();
+    static ArrayList<Info> houses = new ArrayList<>();
+    static class Info {
+        int r, c;
+
+        public Info(int r, int c) {
+            this.r = r;
+            this.c = c;
+        }
+    }
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        
-        n = Integer.parseInt(st.nextToken()); 
-        int m = Integer.parseInt(st.nextToken()); // 최대 m개의 치킨집을 고르고, 나머지는 전부 폐업
-        
-        for (int i = 0; i < n; i++) {
-        	st = new StringTokenizer(br.readLine());
-        	for (int j = 0; j < n; j++) {
-        		int num = Integer.parseInt(st.nextToken());
-        		if (num == 1) house.add(new int[] {i, j});
-        		else if (num == 2) chick.add(new int[] {i, j});
-        	}
-        }
-        
-       
-        int[][] sel = new int[m][2];
-        recursive(chick, sel, 0, 0);
-        System.out.println(min);
- 
-	}
-	
-	private static void recursive(ArrayList<int[]> ch, int[][] sel, int idx, int k) {
-		if (k == sel.length) {
-			// TODO 각 집과 치킨집의 거리 구하기
-			sum = 0;
-			for (int j = 0; j < house.size(); j++) {
-				int dist = Integer.MAX_VALUE;
-				for (int i = 0; i < sel.length; i++) {
-					dist = Math.min(dist, Math.abs(house.get(j)[0] - sel[i][0]) + Math.abs(house.get(j)[1] - sel[i][1]));
-				}
-				sum += dist;
-			}
-			
-			min = Math.min(min, sum);
-			
-			return;
-		}
-		
-		for (int i = idx; i < ch.size(); i++) {
-			sel[k] = ch.get(i);
-			recursive(ch, sel, i + 1, k + 1);
-		}
-		
-	}
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken()); // m개의 치킨집 선택
 
+        map = new int[n][n];
+        for (int i = 0; i < n; i++) {
+            st = new StringTokenizer(br.readLine());
+            for (int j = 0; j < n; j++) {
+                map[i][j] = Integer.parseInt(st.nextToken());
+                if (map[i][j] == 2) {
+                    chickens.add(new Info(i, j));
+                } else if (map[i][j] == 1) {
+                    houses.add(new Info(i, j));
+                }
+            }
+        }
+
+        sel = new Info[m]; // 선택된 m개의 치킨집
+        ans = Integer.MAX_VALUE;
+        getChicken(0, 0);
+        System.out.println(ans);
+    }
+
+    /*
+    1. m개까지 치킨집 설치 -> 조합
+    2. 치킨거리 구하고, 최소 치킨거리 갱신
+     */
+    static void getChicken(int idx, int cnt) {
+        if (cnt == m) {
+            ans = Math.min(ans, getDist());
+            return;
+        }
+
+        for (int i = idx; i < chickens.size(); i++) {
+            Info c = chickens.get(i);
+            sel[cnt] = c;
+            getChicken(i + 1, cnt + 1);
+        }
+    }
+
+    static int getDist() {
+        // 집이랑 sel에 담긴거 하나하나 보며 최소거리 합 구하고 갱신
+        int total = 0;
+        for (int i = 0; i < houses.size(); i++) {
+            Info house = houses.get(i);
+            int dist = Integer.MAX_VALUE;
+
+            for (int j = 0; j < sel.length; j++) {
+                Info chic = sel[j];
+
+                int cur = Math.abs(house.r - chic.r) + Math.abs(house.c - chic.c);
+                if (cur < dist) dist = cur;
+            }
+            total += dist;
+        }
+
+        return total;
+    }
 }
