@@ -73,40 +73,42 @@ public class Main {
         for (int i = 0; i < row; i++) {
             Arrays.fill(nums, 0);
             ArrayList<Info> tmp = new ArrayList<>();
+            // 숫자 카운트
             for (int j = 0; j < col; j++) {
                 int now = map[i][j];
                 nums[now]++;
             }
 
+            // 카운트 된 숫자 정보를 임시 리스트에 넣는다
             for (int j = 1; j <= 100; j++) {
                 if (nums[j] > 0) {
                     tmp.add(new Info(j, nums[j]));
                 }
             }
 
-            // 수의 등장횟수 오름차순 -> 같은게 있으면 숫자 오름차순
+            // 수의 등장횟수 오름차순, 같은게 있으면 숫자 오름차순 정렬
             Collections.sort(tmp);
-            rows[i] = tmp;
+            rows[i] = tmp; // 행 정보 저장
         }
 
+        // 가장 큰 행 사이즈 구한다
         int maxSize = -1;
         for (ArrayList<Info> r : rows) {
-            if (maxSize < r.size() * 2) {
+            if (maxSize < r.size() * 2) { // 행 사이즈는 정보(숫자, 카운트) * 2
                 maxSize = r.size() * 2;
             }
         }
         
-        if (maxSize > 100) maxSize = 100;
+        if (maxSize > 100) maxSize = 100; // 100보다 크다면 100까지만 본다
 
         // 새로운 맵에 값 할당    
-        if (maxSize > 100) maxSize = 100;
         map = new int[row][maxSize];
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < maxSize; j += 2) {
-                if (j/2 < rows[i].size()) {
+                if (j/2 < rows[i].size()) { // 숫자, 숫자가 나온 개수로 배열 갱신
                     map[i][j] = rows[i].get(j/2).num;
                     map[i][j+1] = rows[i].get(j/2).cnt;
-                } else {
+                } else { // 행 정보 리스트 사이즈 넘어가면 0으로 채운다
                     map[i][j] = 0;
                     map[i][j+1] = 0;
                 }
@@ -114,8 +116,9 @@ public class Main {
         }
     }
 
+    // 열연산과 유사
     static void colCal(int row, int col) {
-        int[] nums = new int[101]; // 1~100
+        int[] nums = new int[101]; 
         ArrayList<Info>[] cols = new ArrayList[col];
 
         for (int i = 0; i < col; i++) {
@@ -132,7 +135,6 @@ public class Main {
                 }
             }
 
-            // 수의 등장횟수 오름차순 -> 같은게 있으면 숫자 오름차순
             Collections.sort(tmp);
             cols[i] = tmp;
         }
@@ -145,8 +147,7 @@ public class Main {
         }
         
         if (maxSize > 100) maxSize = 100;
-
-        // 새로운 맵에 값 할당    
+  
         map = new int[maxSize][col];
         for (int i = 0; i < col; i++) {
             for (int j = 0; j < maxSize; j += 2) {
@@ -161,6 +162,7 @@ public class Main {
         }
     }
 
+    // r, c가 map 범위 안이고, map[r][c]가 k일 경우 true
     static boolean isIn() {
         return r < map.length && c < map[0].length && map[r][c] == k;
     }
