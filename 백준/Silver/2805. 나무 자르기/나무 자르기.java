@@ -1,48 +1,56 @@
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileInputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
+    static int n;
+    static long high;
+    static long[] nums;
+    static StringBuilder sb = new StringBuilder();
     public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in)); 
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));  
-        
+        // System.setIn(new FileInputStream("src/input.txt"));
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        int N = Integer.parseInt(st.nextToken());
-        long M = Long.parseLong(st.nextToken());
-        long[] trees = new long[N];
-        
+        n = Integer.parseInt(st.nextToken());
+        long m = Long.parseLong(st.nextToken());
+        nums = new long[n];
         st = new StringTokenizer(br.readLine());
-        long max = 0;
-        for (int i = 0; i < N; i++) {
-            trees[i] = Long.parseLong(st.nextToken());
-            if (trees[i] > max) 
-                max = trees[i];
+        high = -1;
+        for (int i = 0; i < n; i++) {
+            nums[i] = Long.parseLong(st.nextToken());
+            if (nums[i] > high) high = nums[i];
         }
         
-        long low = 0, high = max, mid = 0;
-        while (low <= high) {
-            mid = (high + low) / 2;
+        System.out.println(binarySearch(m));
+    }
+
+    // upper bound
+    static long binarySearch(long m) {
+        long low = 0;
+        long mid;
+        while (low < high) {
+            mid = (low + high) / 2;
+
+            // 나무 잘라보기
             long sum = 0;
-            for (long tree : trees) {
-                if (tree > mid)
-                    sum += tree - mid;
+            for (long tree : nums) {
+                if (tree - mid > 0) {
+                    sum += (tree - mid);
+                }
             }
-            // sum < M -> 더 아래로 자르기
-            if (sum < M) { 
-                high = mid - 1;
-            }
-            // sum >= M -> 더 위로 자르기
-            else {
-                low = mid + 1;
+
+            // 적어도 m미터 -> sum이 m보다는 커야 함
+            // sum == m일 경우에는, 최대한 적게 자르기 위해 low를 높인다
+            if (sum >= m) {
+                low = mid + 1; // sum >= M -> 더 위로 잘라서 잘린나무 총합 줄인다
+            } else {
+                high = mid; // sum < M -> 더 아래로 잘라서 잘린나무 총합 늘린다
             }
         }
-        bw.write(String.valueOf(high));
-        bw.flush();
 
+        return low - 1; // upper bound로 나온 값 - 1
     }
 }
